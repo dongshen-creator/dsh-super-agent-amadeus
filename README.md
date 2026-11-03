@@ -4,6 +4,8 @@
 （Router/Worker Super-agent 控制面）与 [ai-poet/amadeus-system-new](https://github.com/ai-poet/amadeus-system-new)
 拆解出的 **8 个 Amadeus 语音陪伴插件**组合成**一个可安装插件**。
 
+仓库：<https://github.com/dongshen-creator/dsh-super-agent-amadeus>
+
 一条 `dsh plugin add` 装完，得到：
 
 - **Super-agent 控制面**：Router/Worker 双层调度、持久化 Trigger/Thread、
@@ -28,11 +30,20 @@
 
 ## 安装
 
+从 GitHub 直接装：
+
 ```sh
-dsh plugin --profile <profile> add <本仓库绝对路径>
+dsh plugin --profile <profile> add github:dongshen-creator/dsh-super-agent-amadeus
 ```
 
-一条命令即可：`cordis.patch.yml` 里的 9 行 `insert` 随包自动进入 profile 层栈。
+或先克隆再按路径装：
+
+```sh
+git clone https://github.com/dongshen-creator/dsh-super-agent-amadeus.git
+dsh plugin --profile <profile> add ./dsh-super-agent-amadeus
+```
+
+两者等价：`cordis.patch.yml` 里的 9 行 `insert` 随包自动进入 profile 层栈。
 重启 `dsh web`，左栏出现 **Super-agent** 面板（上游行为不变）。
 
 > **不要**再单独安装上游 dsh-super-agent——本包已包含，重复安装会出现两个
