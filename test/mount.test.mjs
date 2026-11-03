@@ -129,3 +129,22 @@ test('upstream super-agent exports its plugin identity', async () => {
   assert.equal(mod.name, 'super-agent')
   assert.equal(typeof mod.apply, 'function')
 })
+
+test('package manifest matches what app-boot expects of a bundle', async () => {
+  const { readFileSync } = await import('node:fs')
+  const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
+
+  // app-boot does join(packageDir, declared) — a non-string crashes profile
+  // loading with ERR_INVALID_ARG_TYPE before any plugin mounts.
+  assert.equal(typeof manifest.dsh?.bundle?.patch, 'string', 'dsh.bundle.patch must be a single path string')
+  assert.ok(manifest.dsh.bundle.patch.length > 0)
+
+  // The declared patch must exist and insert exactly the rows mounted above.
+  const patch = readFileSync(new URL(`../${manifest.dsh.bundle.patch.replace(/^\.\//, '')}`, import.meta.url), 'utf8')
+  for (const row of ROWS) {
+    const rel = row.id === 'super-agent' ? './super-agent/lib/index.js' : `./amadeus/${row.id.replace('amadeus-', '')}/index.js`
+    assert.ok(patch.includes(rel), `cordis.patch.yml is missing ${rel}`)
+  }
+  assert.equal(manifest.dsh?.client?.platform, 'web')
+  assert.ok(manifest.exports?.['./client'], 'package must export ./client for the web bundle')
+})

@@ -141,6 +141,9 @@ MIT。`super-agent/` 为 [TianzeLuo/dsh-super-agent](https://github.com/TianzeLu
 
 ## 已知取舍
 
+- `dsh.bundle.patch` 必须是**单个路径字符串**（app-boot 里是 `join(packageDir, declared)`）；
+  写成数组会让 profile 加载直接抛 `ERR_INVALID_ARG_TYPE`。`test/mount.test.mjs`
+  里有一道针对此形状的断言。
 - Live2D 卡片不加载 pixi-live2d 运行时：harness 浏览器沙箱禁止第三方 CDN
   脚本，所以 Node 端算出与原实现一致的舞台坐标与待机动画参数，卡片自绘等价
   舞台并给出模型文件链接（动画契约有测试覆盖）。
