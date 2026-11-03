@@ -16,7 +16,7 @@
  *   SKIP_INSTALL=1 node scripts/build-bundle.mjs   # reuse node_modules
  */
 import { execFileSync, spawnSync } from 'node:child_process'
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -107,5 +107,8 @@ const BUILTIN = ['fs', 'path', 'os', 'crypto', 'url', 'util', 'child_process', '
 for (const spec of requires) {
   if (BUILTIN.includes(spec)) throw new Error(`client.js: Node builtin "${spec}" is forbidden in the browser bundle`)
 }
-console.log(`[build-bundle] lib/client.js ok (${client.length} bytes, ${requires.length} requires)`)
+// Report real byte size: `client.length` counts UTF-16 code units, so the
+// Chinese UI strings would understate the on-disk size by ~2.6 kB.
+const clientBytes = statSync(join(ROOT, 'lib', 'client.js')).size
+console.log(`[build-bundle] lib/client.js ok (${clientBytes} bytes, ${requires.length} requires)`)
 console.log('[build-bundle] done')
