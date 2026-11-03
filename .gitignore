@@ -1,0 +1,10 @@
+node_modules/
+.dsh/
+*.log
+.scratch/
+*.tsbuildinfo
+
+# Amadeus 插件源码目录里的构建产物与依赖（由 scripts/build-bundle.mjs 重建）
+plugins/*/node_modules/
+plugins/*/lib/
+plugins/*/package-lock.json

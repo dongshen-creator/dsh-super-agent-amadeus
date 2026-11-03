@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "dsh-super-agent-amadeus",
+  "version": "0.7.0",
+  "private": true,
+  "description": "DSH fused bundle: dsh-super-agent (Router/Worker control plane) + the Amadeus voice-companion suite (persona, stt, tts, emotion, memory, voice-clone, proactive, live2d) as one installable plugin.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./super-agent/lib/index.js",
+  "exports": {
+    ".": "./super-agent/lib/index.js",
+    "./client": "./lib/client.js",
+    "./protocol": "./super-agent/lib/protocol.js",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "files": [
+    "lib",
+    "amadeus",
+    "super-agent",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build-bundle.mjs",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "super-agent",
+    "amadeus",
+    "live2d",
+    "voice",
+    "kurisu"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.0",
+    "@deepseek-ai/schemastery": "^3.18.0",
+    "@deepseek-ai/dsh-tools": "*",
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-util-values": "*",
+    "@deepseek-ai/dsh-skill": "*",
+    "@deepseek-ai/dsh-system-prompt": "*"
+  },
+  "optionalDependencies": {
+    "undici": "*"
+  },
+  "devDependencies": {
+    "tsdown": "^0.23.2",
+    "typescript": "^5.7.3",
+    "@types/react": "~18.3.1",
+    "@types/react-dom": "~18.3.1",
+    "react": "^18.2.0",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.1.5-rc.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": [
+        "./cordis.patch.yml"
+      ]
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-tool",
+        "@deepseek-ai/dsh-client-ui-chat",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}

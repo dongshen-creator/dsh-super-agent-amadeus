@@ -1,0 +1,42 @@
+# dsh-super-agent-amadeus bundle patch — 一个 bundle，九个插件。
+#
+# 本包把上游 dsh-super-agent（Router/Worker 控制面）与 Amadeus 语音陪伴套件
+# （8 个插件）融合为单一可安装 bundle。`insert` 行的 `name` 是插件模块描述符：
+# 相对路径由 dsh 的 app-boot 锚定在本 patch 文件旁（anchorInsertedPluginNames），
+# 所以整包安装后这些路径仍然成立。
+#
+# 安装（一条命令）：
+#   dsh plugin --profile <name> add <本包绝对路径>
+#
+# 注意：本包已包含 super-agent。不要同时单独安装上游 dsh-super-agent，
+# 否则会出现两个 `super-agent` id。
+#
+# 需要覆盖配置时，在 profile 的 cordis.patch.yml 里按 id 覆盖：
+#
+#     - id: super-agent
+#       config:
+#         superAgentHome: /abs/path
+#     - id: amadeus-tts
+#       config:
+#         apiKey: sk-xxx
+
+- insert:
+    - id: super-agent
+      name: './super-agent/lib/index.js'
+      config: {}
+    - id: amadeus-persona
+      name: './amadeus/persona/index.js'
+    - id: amadeus-stt
+      name: './amadeus/stt/index.js'
+    - id: amadeus-tts
+      name: './amadeus/tts/index.js'
+    - id: amadeus-emotion
+      name: './amadeus/emotion/index.js'
+    - id: amadeus-memory
+      name: './amadeus/memory/index.js'
+    - id: amadeus-voice-clone
+      name: './amadeus/voice-clone/index.js'
+    - id: amadeus-proactive
+      name: './amadeus/proactive/index.js'
+    - id: amadeus-live2d
+      name: './amadeus/live2d/index.js'
